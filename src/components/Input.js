@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 const Input = (props) => (
   <div>
     <form onSubmit={props.handleSubmit}>
-      <input type="text" value={props.value} onChange={props.handleChange} placeholder="Your Number" />
+      <input type="text" value={props.inputNumber} onChange={props.handleChange} placeholder="Your Number" />
       <input type="submit" value="Submit" />
     </form>
   </div>
 );
 
 Input.propTypes = {
-  value: PropTypes.string.isRequired,
+  inputNumber: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
