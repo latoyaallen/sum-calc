@@ -2,9 +2,7 @@ import React from 'react';
 import './App.css';
 import Input from './components/Input';
 import Solution from './components/Solution';
-import getDifference from './lib/getDifference';
-import squareOfSums from './lib/squareOfSums';
-import sumOfSquares from './lib/sumOfSquares';
+import mockAsyncCall from './api/mockAsyncCall';
 
 class App extends React.Component {
   constructor(props) {
@@ -23,22 +21,16 @@ class App extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    // https://stackoverflow.com/questions/40029867/trying-to-implement-a-simple-promise-in-reactjs
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#Creating_a_Promise_around_an_old_callback_API
-    const getSolution = (inputNumber) => { //2640 when given 10
-      return getDifference(squareOfSums(inputNumber), sumOfSquares(inputNumber));
+    try {
+      const request = { method:'get', body:{ inputNumber: this.state.inputNumber } };
+      const response = await mockAsyncCall(request);
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      this.setState({ answer: response.answer.solution });
+    } catch (error) {
+      console.log(error);
     }
-
-    const returnValue =
-      {
-        'datetime': 'today',
-        'solution': getSolution(this.state.inputNumber),
-        'inputNumber': this.state.inputNumber,
-        'occurrences': 0,
-        'last_datetime': 'yesterday'
-      };
-
-    this.setState({ answer: returnValue["solution"] });
   }
 
   render() {
